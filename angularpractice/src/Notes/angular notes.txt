@@ -1,0 +1,14 @@
+Data Binding : Communication between the typescript code (business logic)and html template(what we see).
+
+Output Data(Type Script to HTML)
+1: String Interpolation ( Ex: {{data}})
+2: Property Binding (Ex: [property] = "data")
+
+React to (user) event
+3: Event Binding( Ex: (event)="expression")
+
+Combination of both: Two-Way-Binding( Ex: [(ngModel)]="data")
+
+$event = event emitted by that element.
+
+To be able to use 'ngModel', the FormsModule(form @angular/forms) need to be added to your imports[] array in the Appmodule (should be there by default in a CLI project).
