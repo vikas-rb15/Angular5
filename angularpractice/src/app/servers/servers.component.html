@@ -1,3 +1,4 @@
+<label >Server Name</label>
 
 <p class="header">this one is example for property binding</p>
 <button class="btn btn-primary" [disabled] = "!allowNewServer">Add Server</button>
@@ -8,15 +9,18 @@
 <p class="header">this one is example for property binding</p>
 <p [innerText]="allowNewServer"></p>
 
-<p class="header">this one is example for event binding</p>
-<button class="btn btn-primary" (click)="createNewServer()">Add Server</button>
-<p> {{serverCreationStatus}}</p> 
-
-<label >Server Name</label>
 <input type="text" (input)="onUpdateServername($event)" class="form-control"/>
 <p> {{serverName}}</p>
 
 <label class="header">Two way data binding</label>
 <input type="text" [(ngModel)]="serverName" class="form-control"/>
+
+<p class="header">this one is example for event binding</p>
+<button class="btn btn-primary" (click)="createNewServer()">Add Server</button>
+<!--<p> {{serverCreationStatus}}</p> -->
+<p *ngIf="serverCreated; else conditionfailed" > Server was Created. Server name is {{serverName}}</p>
+<ng-template #conditionfailed>
+<p>display if condition is false</p>
+</ng-template>
 <app-server></app-server>
 <app-server></app-server>

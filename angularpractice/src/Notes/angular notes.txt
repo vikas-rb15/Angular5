@@ -12,3 +12,16 @@ Combination of both: Two-Way-Binding( Ex: [(ngModel)]="data")
 $event = event emitted by that element.
 
 To be able to use 'ngModel', the FormsModule(form @angular/forms) need to be added to your imports[] array in the Appmodule (should be there by default in a CLI project).
+
+*****************************************************
+Directives: Directives are instructions in the DOM!.
+For Example: "componemt" are such instructions in the DOM(@component), 
+ngIf is a structural directive thats why we add * before it, means it changes the structure of our DOM
+
+<p *ngIf="condition"; else conditionfailed> display if condition is true</p>
+<ng-template #conditionfailed>
+<p>display if condition is false</p>
+</ng-template>
+
+-- Unlike structural directives, attribute directives dont add or remove elements.
+They only change the element they were placed on.
