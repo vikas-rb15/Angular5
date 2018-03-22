@@ -2,4 +2,12 @@
   .navbar-collapse {
     display: flex;
   }
-
+.navbar.navbar-detail{
+  background-color: black
+}
+.navbar-toggle .icon-bar{
+  background-color:white
+}
+.navbar-toggle {
+  background-color:black
+}
