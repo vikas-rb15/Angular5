@@ -25,3 +25,15 @@ ngIf is a structural directive thats why we add * before it, means it changes th
 
 -- Unlike structural directives, attribute directives dont add or remove elements.
 They only change the element they were placed on.
+
+ngStyle attribute directive: it is use to provide styling to the html elements.
+it is used like attribute, alos using properting binding to configure it.
+Ex: <p [ngStyle]="{backgroundColor:getColor()}">Content</p> // here getColor() function returns color.
+
+ngClass attribute directive: It is ised to provide/add classes to the html elements dynamically.
+Ex: <p [ngClass]="{className:condition}">Content</p> // if condition is true then className is added else will not be added
+it is used like attribute, alos using properting binding to configure it.
+
+ngFor structural directive: it is used like for loop in C#.
+syntax: <p *ngFor="let object of listOfObjects"></p>
+Here as number of listOfObjects are ther those number of p element gets created;
