@@ -37,3 +37,134 @@ it is used like attribute, alos using properting binding to configure it.
 ngFor structural directive: it is used like for loop in C#.
 syntax: <p *ngFor="let object of listOfObjects"></p>
 Here as number of listOfObjects are ther those number of p element gets created;
+
+
+*****************************************
+@Input() decorator: the properties of a component is accessable only with in the component, not from out side. 
+Generally it is a good thing, that we dont want our properties are bindable from out side the component.
+So we have to explicit which properties you want to expose out side of this component. 
+Parent component to be able to bind to this property, we need to add decorator called input.
+For example: @Input() propertyNAme: DataType;
+
+Another way to use @Input() decorator is by passing alias to it.
+For example: @Input('outsideUsePropertyName') componentUsePropertName: dataType;
+Here if some parent component want to use this property, then that can use/ call by alias nam that is outsideUsePropertyName.
+*******
+
+EventEmitter: Is an object which allows you to emit your own(component) events.
+For Ex: eventemittingObject = EventEmitter<objectName>();// creating event emitter event object
+eventemittingObject.emit(objectName); // how we emit event
+
+**************
+@OutPut() decorator: Same like @Input() decorator, @Output() used to communicate with other component which is implementing it. 
+But @OutPut() decorator is used to send data from this component to another and @Input() decorator is used to get data from another component which is implementing it.
+Ex: @OutPut() eventemittingObject = EventEmitter<objectName>();
+and use the above event in parent component as <child-componemt (eventemittingObject)=somefunctionName($event)></child-componemt>
+
+
+
+ANother way to use @OutPut() decorator is by pasiing any alias name to it.
+ For Example 
+ Ex: @OutPut('someAliasName') eventemittingObject = EventEmitter<objectName>();	
+and use the above event in parent component as <child-componemt (someAliasName)=somefunctionName($event)></child-componemt>
+********************
+AS we created many component it has its own css file. so when ever we write css for the element of that component is specific to that component only.
+Why? Because, it will add some randome attribute to the elemets of every component so that the css do not over lap or collide each other.
+
+For ex: <p>Hello</>
+.P{
+color: blue;
+}
+Now after running the code you can see this in developer tool(F12) that it will add some randome attribute to it.
+as 
+<p _ngcontent-ejo-2	>Hello</> and same will be add to its component css as 
+.P [_ngcontent-ejo-2]{
+color: blue;
+}
+////************
+Here encapsulation can be used to apply the css globally. use encapsulation: ViewEncapsulation.None in@Component() decorator.
+Local References: They are used to be accessable in particular html file of the componemt.
+Ex: #referenceName
+Ex: <input type="text" #nameReference/>. how to use it
+<button (click)=addName(nameReference)/>
+or
+@ViewChild('nameReference') anyNametoUseI: ElementRef;
+how to use it. this.anyNametoUseI.nativeElement.value;
+
+
+Life Cycle of Angular:
+1: ngOnChanges():It execute right at the start when new component is created or Called after a bout input property changes(Ex: Property decorated with @ input).
+2.ngOnInIt(): Once the componemt is initialized. Means onece the constructor is executed.
+3. ngDoCheck(): Called during every change detection run. This method will be executeed alot. As it wil run when ever there is a change in that component.
+4. ngAfterCOntentInIt(): This is called when ever the content is projected via ng-content has been initialized. Not only the comonent. 
+but also the parent componemt which will get added to our component through ng-content
+5. ngAfterCOntentChecked(): CAlled every time the projected contenthas been changed
+6: ngAfterVIewInIt(): Called after the Component's view( and child view) has been initialized. One the view is rendered or initialized.
+7: ngAfterVIewChecked(): CAlled every time the view(and child view) have been checked.
+8: ngOnDestroy(): Called once the componemt is about to be destroyed.
+
+*************
+Directives:
+Create your own directive.
+import {Directive} * from '@angular/core'
+
+@Directive({
+selector: '[appBasicHighLight]'
+})
+export class BasicHighLightDirective implment ngOnInIt{
+constructor(private elementRef: ElementRef){
+}
+ngOnInIt(){
+this.elementRef.nativeElement.style.backgroundColor = 'green';
+}
+}
+note: now declare this in app.module.ts under declaration.
+now use it as 
+<p appBasicHighLight> Now this p element will have green background with directive implementation</p>.
+********************************************
+Note: It is better to use renderer instead of direct dom element. FOr example
+
+import {Directive, Renderer2} * from '@angular/core'
+
+@Directive({
+selector: '[appBetterHighLight]'
+})
+export class BetterHighLightDirective implment ngOnInIt{
+constructor(private elementRef: ElementRef, private renderer: Renderer2){
+}
+ngOnInIt(){
+this.renderer.setStyle(this.elementRef.nativeElement, 'background-Color', 'blue';
+}
+}
+note: now declare this in app.module.ts under declaration.
+now use it as 
+<p appBetterHighLight> Now this p element will have blue background with directive implementation</p>.
+Note: Some time directily accessing the element reference is not availabe in some browser. 
+So for better purpose use renderer2 object to make use of dom element.
+**************************************************
+@HostListner('mouseenter') functionName(){
+this.renderer.setStyle(this.elementRef.nativeElement, 'background-Color', 'blue';
+}
+@HostListner('mouseleave') functionName(){
+this.renderer.setStyle(this.elementRef.nativeElement, 'background-Color', 'transparent';
+}
+*******************************
+now another simple way to use is using @HostBinding() in the directive
+import {Directive, Renderer2} * from '@angular/core'
+
+@Directive({
+selector: '[appHostBindingHighLight]'
+})
+export class HostBindingHighLightDirective implment ngOnInIt{
+@HostBinding('style.backgroundColor') bcakgroundColor: string = 'transparent';
+
+
+@HostListner('mouseenter') functionName(){
+this.bcakgroundColor = 'blue';
+}
+@HostListner('mouseleave') functionName(){
+this.bcakgroundColor = 'transparent';
+}
+}
+
+<p HostBindingHighLightDirective> Now this p element will have blue/transparent background with directive implementation on hover</p>.
