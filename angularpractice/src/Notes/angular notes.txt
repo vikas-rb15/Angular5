@@ -168,3 +168,7 @@ this.bcakgroundColor = 'transparent';
 }
 
 <p HostBindingHighLightDirective> Now this p element will have blue/transparent background with directive implementation on hover</p>.
+
+**********************
+Routing:
+
