@@ -170,5 +170,19 @@ this.bcakgroundColor = 'transparent';
 <p HostBindingHighLightDirective> Now this p element will have blue/transparent background with directive implementation on hover</p>.
 
 **********************
-Routing:
+Routing: Angular Shifts with its own router which allows you to change the url in the url bar and still use only one page.
+But exchange major part of taht page. 
+So that to the user it look like it loaded a new page. Because only the header is same, 
+but behind the sceen it is still java script
+changing tha lots of part in the dom in your page, 
+making it look like a new page was rendered. 
+But you are still in the angular world single page application.
+
+Need to declare all routes in app.module file. For that import Routes from '@angular/router'
+Syntax:
+
+const appRoutes: Routes = [
+	{path: 'users', component: UserComponent}
+	{path: 'admin', componemt: AdminComponent}
+];
 
