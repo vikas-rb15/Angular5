@@ -186,3 +186,164 @@ const appRoutes: Routes = [
 	{path: 'admin', componemt: AdminComponent}
 ];
 
+<a routerLink='/user'>User<a/>
+<a routerLink='/home'>Home<a/>
+<a routerLink='/Admin'>Admin<a/>
+<a routerLink='../Admin'>Admin<a/>// Here it tells to go one path back 
+<a routerLink='/'>Home<a/>
+<a [routerLink]=['/user','parameter']><a/>//here parameter can be any id or string
+
+Note: Here routerlink link catches the link on the other end, 
+prevent the default to send the request to the server and chech for the component and parse it to the page.
+
+Exapme for relative path <a routerLink='user'><a/>// Here if we click the same user link on user comonent. It will try to search like http://localhost:4200/user/user
+Example for absolute path. <a routerLink='/user'><a/>Here if we click the same user link on user comonent. It will try to search like http://localhost:4200//user
+Note: It is good to use '/' in routerlink
+
+Now how to make the route link active
+
+<li routerLinkActive="active"
+	[routerLinkActiveOptions]="{exact:true}">
+	<a routerLink="/">Home</a>
+</li>
+<li routerLinkActive="active"
+	>
+	<a routerLink="/"Admin>Admin</a>
+</li>
+<li routerLinkActive="active"
+	>
+	<a routerLink="/User">User</a>
+</li>
+
+
+How to route programitically:
+
+inject Router in constructor of the component.
+now use it as  this.router.navigate(['/server']);//absolute path
+or you can  use this.router.navigate(['server']);//relative path.
+Here both will run fine. Relative path do not throw error because unlike the routerLink, 
+navigate() method does not know on which rpouter you are currently on. 
+
+But we can pass second parameter to the navigate() method to know the relative pat.
+Here inject ActivatedRoute in the constructor in which component you want to make use of it.
+constructor(private router: Router, route: ActivatedRoute){}
+now use it this.router.navigate(['server'], {relativeTo:this.route});// Note: f you are in server component and try to run this code. it will throw error.
+
+
+Passing parameter to the route:
+{path: 'user/id', componemt: UserComponent}// it will only when the url link is http://localhost:4200/user/id. Her if user/id then only the com get loaded
+{path: 'user/:id', componemt: UserComponent}// it will load when the url is user/anything link is http://localhost:4200/user/anything. anything meany any number or string
+{path: 'user/:id/:name', componemt: UserComponent}
+
+constructor(route: ActivatedRoute){}
+ngOnInIt(){
+	let id = this.route.snapshot.params["id"];
+	let name = this.route.snapshot.params["name"];
+}
+
+But it will work for the first time when you are on some other component and navigete to this component. 
+If there is scnerio where you wnat to load data on the same component. Above snapshot do not work. For this you need to make use of observable.
+constructor(route: ActivatedRoute){}
+private routeSub: Subscription;
+ngOnInIt(){
+	let id = this.route.snapshot.params["id"];
+	let name = this.route.snapshot.params["name"];
+	
+	this.routeSub = this.route.params
+	.subscribe(
+	(params: Params)=>{
+		let id = params["id"];
+		let name = params["name"];
+	});// So when ever there is a change in the url of same component this observable will observe the change in route and udate the id and name respectively.
+}
+But this subscribtion will not destroy when the component is changed. It will store in the memory for later use. But in case you want to destroy it. 
+Destroy in the ngOnDestroy() ethod of angular life cycle.
+ngOnDestroy(){
+	this.routeSub.Unsubscribe();
+}
+
+// Passing query mparamenter through routerLink
+
+{path: 'user/:id/edit', componemt: UserEditComponent}
+
+<a [routerLink] = "['/user',5,'edit']"
+	[querParams]={allowEdit: '1'}
+	[fragment]="loading"
+><a/>// Here querParams is another binding property of routerLink. 
+When you click this link the url will be. http://localhost:4200/user/5/edit?allowEdit=1#loading
+
+Now doing same thing programitically.
+
+onEdit(id: number){
+	this.route.navigate(['/user',id,'edit'], {querParams: {allowEdit: '1'}},fragment:'loading');
+}
+// Retrieving the query parameter in the component.
+constructor(route: ActivatedRoute){}
+private routeSub: Subscription;
+ngOnInIt(){
+	console.log(this.route.snapshot.querParams);
+	console.log(this.route.snapshot.fragment);
+	
+	this.routeSub = this.route.querParams
+	.subscribe(
+	(querParams: QuerParams)=>{
+		
+	});// So when ever there is a change in the url of same component this observable will observe the change in route and udate the query parametersrespectively.
+}
+
+//Child routing:
+
+{path: 'user', componemt: UserComponent}
+{path: 'user/:id', componemt: UserComponent}
+{path: 'user/:id/edit', componemt: UserEditComponent}
+
+replacing above routing into child routing...
+{path: 'user', componemt: UserComponent , children[
+	{path: ':id', componemt: UserComponent},
+	{path: ':id/edit', componemt: UserEditComponent}
+]}
+// how to preserve query parameters.
+
+onEdit(id: number){
+	this.route.navigate(['/user',id,'edit'], {querParams: {allowEdit: '1'}},queryParamsHandeling: 'preserve');
+}
+
+//Redirecting and wildcard route
+When ever user try to navigate which componemt does not exist. Then redirect the useer to particular page by saying page not found.
+
+
+Create a new component as pageNotFound and write code as <h4>Page not found</h4>
+
+{path: 'not-found', componemt: pageNotFound}
+{path: '**', redirectTo: '/not-found'}// here 2 * indicates wildcards. When ever user enters somethng which is not present will be redirected to pageNotFond
+
+Note: Please make sure that this wildcard route placed at last of the route array.
+
+// OutSourcing the route configuration.
+
+Create a new .ts for route configuration. let say ap-routing.module.ts
+
+now move the route constants in that file as below.
+
+
+import section here 
+
+const appRoutes: Routes = [
+	{path: 'server', componemt: ServeComponent},
+	{path: 'user', componemt: UserComponent , children[
+		{path: ':id', componemt: UserComponent},
+		{path: ':id/edit', componemt: UserEditComponent}
+	]}
+	{path: 'not-found', componemt: pageNotFound},
+	{path: '**', redirectTo: '/not-found'}
+]
+@NgModule({
+	imports:[
+		RouterModule.forRoot(appRoutes)
+	]
+	exports:[RouterModule]
+})
+
+export class AppRoutingModule{
+
+}

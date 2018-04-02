@@ -3,7 +3,7 @@ import { Recipe } from './recipe-list/recipe.model';
 import { RecipeService } from "./recipe.services";
 
 @Component({
-  selector: 'app-recipes',
+  selector: 'recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css']
 })

@@ -4,7 +4,7 @@ import { Recipe } from '../recipes/recipe-list/recipe.model';
 import { ShoppingListService } from './shopping-list.services';
 
 @Component({
-  selector: 'app-shopping-list',
+  selector: 'shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
