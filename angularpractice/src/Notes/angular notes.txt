@@ -347,3 +347,7 @@ const appRoutes: Routes = [
 export class AppRoutingModule{
 
 }
+
+****************************************
+Forms Module:
+To work with forms in angular we need to import FormsModule from @angular/forms. 
