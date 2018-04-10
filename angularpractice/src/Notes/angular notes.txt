@@ -48,7 +48,7 @@ For example: @Input() propertyNAme: DataType;
 
 Another way to use @Input() decorator is by passing alias to it.
 For example: @Input('outsideUsePropertyName') componentUsePropertName: dataType;
-Here if some parent component want to use this property, then that can use/ call by alias nam that is outsideUsePropertyName.
+Here if some parent component want to use this property, then that can use/ call by alias name that is outsideUsePropertyName.
 *******
 
 EventEmitter: Is an object which allows you to emit your own(component) events.
@@ -58,7 +58,7 @@ eventemittingObject.emit(objectName); // how we emit event
 **************
 @OutPut() decorator: Same like @Input() decorator, @Output() used to communicate with other component which is implementing it. 
 But @OutPut() decorator is used to send data from this component to another and @Input() decorator is used to get data from another component which is implementing it.
-Ex: @OutPut() eventemittingObject = EventEmitter<objectName>();
+Ex: @OutPut() eventemittingObject = new EventEmitter<objectName>();
 and use the above event in parent component as <child-componemt (eventemittingObject)=somefunctionName($event)></child-componemt>
 
 
